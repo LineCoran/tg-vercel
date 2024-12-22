@@ -16,9 +16,6 @@ const greeting = () => async (ctx: any) => {
     const chatId = ctx.update.message.chat.id;
     const text = ctx.update.message.text;
 
-    console.log('ctx', ctx);
-    console.log('message_id', ctx.update.message.message_id);
-
     const session = await dbService.getUserSession(chatId);
 
     if (text === '/start') {
