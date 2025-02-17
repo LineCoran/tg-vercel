@@ -71,8 +71,9 @@ export const newExpense = new Scenes.WizardScene(
 
     ctx.wizard.state.calculation.delivery = Number(value);
 
-    const { data } = await axios.get('https://www.nbrb.by/api/exrates/rates/431');
-    const usd = Number(data.Cur_OfficialRate.toFixed(2));
+    // const { data } = await axios.get('https://www.nbrb.by/api/exrates/rates/431');
+    const usd = 3.27
+      // Number(data.Cur_OfficialRate.toFixed(2));
 
     const { total, productTotalPrice, deliveryPrice, chinaDeliveryBLR } = calculationResult(ctx.wizard.state.calculation, usd);
 
