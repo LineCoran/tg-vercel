@@ -51,7 +51,7 @@ export const KEYBOARDS = {
         [
             {
                 text: '🏠 На главную',
-                callback_data: '/start',
+                callback_data: '/back',
             },
         ]
     ],

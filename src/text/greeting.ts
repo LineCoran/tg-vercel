@@ -11,14 +11,10 @@ const debug = createDebug('bot:greeting_text');
 /* tslint:disable */
 
 const greeting = () => async (ctx: any) => {
-  console.log('here')
   try {
 
     const chatId = ctx.update.message.chat.id;
     const text = ctx.update.message.text;
-
-    console.log('chatId', chatId)
-
     const session = await dbService.getUserSession(chatId);
 
     if (text === '/start') {
@@ -48,8 +44,12 @@ const greeting = () => async (ctx: any) => {
 
         try {
             const admins = await getChatsWithAdmins();
-            admins.forEach((adminChatId: any) => {
-                ctx.forwardMessage(adminChatId, chatId, ctx.update.message.message_id)
+            admins.forEach(async (adminChatId: any) => {
+              try {
+                await ctx.forwardMessage(adminChatId, chatId, ctx.update.message.message_id)
+              } catch (e) {
+                console.log('error', e)
+              }
             })
             session.is_create_order_process = false;
             await dbService.saveUserSession(chatId, session)
@@ -69,7 +69,8 @@ const greeting = () => async (ctx: any) => {
             }
             
         } catch (error: any) {
-            await sendOrEditMessage(ctx, chatId, `Не удалось оформить заказ. Повторите попытку позже. Error: ${error.message}`, createCategoryOptions([], { isMain: true }));    
+            await sendOrEditMessage(ctx, chatId, `Не удалось оформить заказ. Повторите попытку позже. Error: ${error.message}`, createCategoryOptions([], { isMain: true }));
+            return
         }
     }
 
