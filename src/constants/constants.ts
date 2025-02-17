@@ -2,64 +2,39 @@ export const KEYBOARDS = {
     START: [
         [
             {
-                text: 'Оформить заказ',
+                text: '🛒 Оформить заказ',
                 callback_data: '/order',
             }
         ],
         [
             {
-                text: 'Обо мне',
-                callback_data: '/about',
-            },
-        ],
-        [
-            {
-                text: 'Контакты',
+                text: '☎️ О нас',
                 callback_data: '/contacts'
             },
-
         ],
         [
             {
-                text: 'Условия',
+                text: '💻 Рассчитать стоимость',
+                callback_data: '/calculation'
+            }
+        ],
+        [
+            {
+                text: '🤝 Условия',
                 callback_data: '/conditions',
             }
         ],
         [
             {
-                text: 'Договора',
-                callback_data: '/agreements',
-            }
-        ],
-        [
-            {
-                text: 'Пройти обучение',
+                text: '🏫 Пройти обучение',
                 callback_data: '/education',
             }
         ],
-        [
-            {
-                text: 'Реквизиты',
-                callback_data: '/credentials'
-            }
-        ],
-        [
-            {
-                text: 'Ответственность сторон',
-                url: 'https://telegra.ph/Otvetstvennost-storon-12-21'
-            }
-        ],
-        [
-            {
-                text: 'Гайд',
-                url: 'https://drive.google.com/file/d/1cOX4YoP2uwrBgksWMQm1fAB1CyBJOTDO/view?fbclid=PAZXh0bgNhZW0CMTEAAabCWoamAWtX5tmBvUbMutyyNSJlhbE38VmIgBJb0-6Kz_nSvK4IG4ugDJM_aem_C44DmseW-pkT3_NlIvEl2A'
-            }
-        ]
     ],
     ADMIN: [
         [
             {
-                text: 'Режим администратора',
+                text: '👨‍💻Режим администратора',
                 callback_data: '/admin',
             },
         ]
@@ -67,7 +42,7 @@ export const KEYBOARDS = {
     BACK: [
         [
             {
-                text: 'Назад',
+                text: '⬅️ Назад',
                 callback_data: '/back',
             },
         ]
@@ -75,8 +50,8 @@ export const KEYBOARDS = {
     MAIN: [
         [
             {
-                text: 'На главную',
-                callback_data: '/back',
+                text: '🏠 На главную',
+                callback_data: '/start',
             },
         ]
     ],
@@ -84,7 +59,7 @@ export const KEYBOARDS = {
     CANCEL: [
         [
             {
-                text: 'Отмена',
+                text: '🔴 Отмена',
                 callback_data: '/back',
             },
         ]
@@ -93,15 +68,21 @@ export const KEYBOARDS = {
     ORDER: [
         [
             {
-                text: 'Перейти к оформлению',
+                text: '🟢 Перейти к оформлению',
                 callback_data: '/create_order',
             },
-        ]
+        ],
+        [
+            {
+                text: '🏫 Гайд',
+                url: 'https://drive.google.com/file/d/1cOX4YoP2uwrBgksWMQm1fAB1CyBJOTDO/view?fbclid=PAZXh0bgNhZW0CMTEAAabCWoamAWtX5tmBvUbMutyyNSJlhbE38VmIgBJb0-6Kz_nSvK4IG4ugDJM_aem_C44DmseW-pkT3_NlIvEl2A'
+            }
+        ],
     ],
     NEW_ORDER: [
         [
             {
-                text: 'Новый заказ',
+                text: '🛒 Новый заказ',
                 callback_data: '/create_order',
             },
         ]
@@ -145,6 +126,12 @@ export const KEYBOARDS = {
         CONTACTS: [
             [
                 {
+                    text: 'Реквизиты',
+                    callback_data: '/credentials'
+                }
+            ],
+            [
+                {
                     text: 'Инстаграмм',
                     url: 'https://www.instagram.com/dardaryya?igsh=MTkxam92cmwzdmdqOQ=='
                 },
@@ -169,18 +156,30 @@ export const KEYBOARDS = {
                     text: 'Условия для самовыкупа',
                     url: 'https://telegra.ph/Usloviya-dlya-samovykupa-12-21'
                 },
-            ]
+            ],
+            [
+                {
+                    text: 'Ответственность сторон',
+                    url: 'https://telegra.ph/Otvetstvennost-storon-12-21'
+                }
+            ],
+            [
+                {
+                    text: '📄 Договора',
+                    callback_data: '/agreements',
+                }
+            ],
         ],
         AGREEMENTS: [
             [
                 {
-                    text: 'Договор выкуп',
+                    text: '📄 Договор выкуп',
                     url: 'https://disk.yandex.by/i/xkm9du6VGXqk6g?fbclid=PAZXh0bgNhZW0CMTEAAaYWJlNFze01pE0oDDL_GfPd-q2QiZDGZcqjKHQI9iH73RitkeUqq4DbgLg_aem_Df8fGx5oWEVQGHLj2NpSzw'
                 },
             ],
             [
                 {
-                    text: 'Договор обучение',
+                    text: '📄 Договор обучение',
                     url: 'https://disk.yandex.by/i/lIQS0B3KtqjKVA?fbclid=PAZXh0bgNhZW0CMTEAAabp3sn-wOpHaTfh_FkHq1L4cj8xeWLvwpQUo-XnKXXef48g5eYmlvgwkug_aem_tBezr_efIyplmcjsh-nQVg'
                 },
             ]

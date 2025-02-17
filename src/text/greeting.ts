@@ -11,10 +11,13 @@ const debug = createDebug('bot:greeting_text');
 /* tslint:disable */
 
 const greeting = () => async (ctx: any) => {
+  console.log('here')
   try {
 
     const chatId = ctx.update.message.chat.id;
     const text = ctx.update.message.text;
+
+    console.log('chatId', chatId)
 
     const session = await dbService.getUserSession(chatId);
 
@@ -75,7 +78,6 @@ const greeting = () => async (ctx: any) => {
         case '/start':
           const admins =  await getAdmins()
           const chat = ctx.update.message.chat
-          console.log('chat', chat)
             if (admins.includes(chat.username)) {
                 try {
                     session.is_admin = true;
@@ -101,8 +103,8 @@ const greeting = () => async (ctx: any) => {
             const { text, options } = getStartMsg(session.is_owner);
             const sentMessage = ctx.sendMessage(text, options );
             session.last_message_id = sentMessage.message_id;
-            session.first_name = chat.first_name || 'unkwon first_name';
-            session.second_name = chat.last_name || 'unkwon last_name';
+            session.first_name = chat.first_name || 'first_name';
+            session.second_name = chat.last_name || 'last_name';
             session.username = chat.username;
             dbService.saveUserSession(chatId, session);
         default:

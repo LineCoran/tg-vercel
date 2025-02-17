@@ -14,6 +14,11 @@ const MAIN_ADMINS = [MAIN_ADMIN, ...SUB_MAIN_ADMIN];
 const callback = () => async (ctx: any) => {
     const chatId = ctx.update.callback_query.message?.chat.id;
     const callback_query = ctx.update.callback_query.data;
+
+    if (callback_query === '/calculation') {
+        ctx.scene.enter('calculation_scene')
+        return
+    }
     try {
         const session = await dbService.getUserSession(chatId);
         if (callback_query.includes(DELETE_ADMIN_UNIQ_PREFIX)) {
@@ -33,22 +38,6 @@ const callback = () => async (ctx: any) => {
         }
     
         switch (callback_query) {
-            case '/about':
-                return  sendOrEditMessage(ctx, chatId, '\n' +
-                    'Привет 👋 \n' +
-                    '\n' +
-                    'Меня зовут Даша! Я занимаюсь выкупом и доставкой товаров из Китая под ключ 🔑 \n' +
-                    '\n' +
-                    'Занимаюсь я этим более 3 лет. Поэтому с вашим грузом точно всё будет в порядке!\n' +
-                    '\n' +
-                    'Я привезла более 10 тонн, различных категорий, товара.\n' +
-                    '\n' +
-                    'С отзывами моих клиентов вы можете ознакомиться на моей страничке в «Instagram». Ссылка на нее есть в разделе «Контакты»\n' +
-                    '\n' +
-                    'Если вы еще не скачали все приложения - у меня есть бесплатный Гайд. А если хотите научиться заказывать сами - обучение.\n' +
-                    '\n' +
-                    'Жду ваш заказ 😉', createCategoryOptions([], { isBack: true })
-                )
             case '/back':
                 const { text, options } = getStartMsg(session.is_owner)
                 session.is_create_order_process = false;
@@ -56,7 +45,21 @@ const callback = () => async (ctx: any) => {
                 await dbService.saveUserSession(chatId, session);
                 return sendOrEditMessage(ctx, chatId, text, options );
             case '/contacts':
-                return sendOrEditMessage(ctx, chatId, 'Наши контакты:', createCategoryOptions(KEYBOARDS.LINKS.CONTACTS, { isBack: true }))
+                return  sendOrEditMessage(ctx, chatId, '\n' +
+                  'Привет 👋 \n' +
+                  '\n' +
+                  'Меня зовут Даша! Я занимаюсь выкупом и доставкой товаров из Китая под ключ 🔑 \n' +
+                  '\n' +
+                  'Занимаюсь я этим более 3 лет. Поэтому с вашим грузом точно всё будет в порядке!\n' +
+                  '\n' +
+                  'Я привезла более 10 тонн, различных категорий, товара.\n' +
+                  '\n' +
+                  'С отзывами моих клиентов вы можете ознакомиться на моей страничке в «Instagram». Ссылка на нее есть в разделе «Контакты»\n' +
+                  '\n' +
+                  'Если вы еще не скачали все приложения - у меня есть бесплатный Гайд. А если хотите научиться заказывать сами - обучение.\n' +
+                  '\n' +
+                  'Жду ваш заказ 😉', createCategoryOptions(KEYBOARDS.LINKS.CONTACTS, { isBack: true })
+                )
             case '/conditions':
                 return sendOrEditMessage(ctx, chatId, 'Условия:', createCategoryOptions(KEYBOARDS.LINKS.CONDITIONS, { isBack: true }))
             case '/agreements':
