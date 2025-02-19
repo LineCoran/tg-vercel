@@ -6,10 +6,12 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import { development, production } from './core';
 import { scences } from './scenes';
 
-const ENVIRONMENT = process.env.NODE_ENV || '';
+const ENVIRONMENT = process.env.NODE_ENV_1 || '';
 
 const isDev = ENVIRONMENT !== 'production'
-const isTest = ENVIRONMENT !== 'test'
+const isTest = ENVIRONMENT === 'test'
+
+console.log('isTest', isTest)
 const BOT_TOKEN = isTest ? process.env.BOT_TOKEN_TEST : process.env.BOT_TOKEN_DEV;
 
 const bot = new Telegraf(BOT_TOKEN);
