@@ -75,7 +75,7 @@ export const KEYBOARDS = {
         [
             {
                 text: '🏫 Гайд',
-                url: 'https://drive.google.com/file/d/1cOX4YoP2uwrBgksWMQm1fAB1CyBJOTDO/view?fbclid=PAZXh0bgNhZW0CMTEAAabCWoamAWtX5tmBvUbMutyyNSJlhbE38VmIgBJb0-6Kz_nSvK4IG4ugDJM_aem_C44DmseW-pkT3_NlIvEl2A'
+                url: 'https://drive.google.com/file/d/1n0J8xD4ADp7fi5Lz2W86tPOAXJcBBq1y/view'
             }
         ],
     ],

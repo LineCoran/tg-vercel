@@ -59,29 +59,13 @@ export const createAdminsListToDelete = (admins: any) => {
     return result;
 }
 
-export const getChatsWithAdmins = async () => {
-    const chats: any[] = [];
-
-    try {
-
-        const chatsFromDb = await dbService.getChatsWithAdmins();
-        chatsFromDb.forEach(row => chats.push(row.chat_id));
-        
-    } catch (error) {
-        console.log(error)
-        return [];
-    }
-
-    return chats
-}
-
 export const getAdmins = async () => {
     const result: any = [];
 
     try {
         const admins = await dbService.getAdmins();
-        admins.forEach(row => result.push(row.username));
-        
+        admins.forEach(admin => result.push(admin));
+
     } catch (error) {
         console.log(error)
         return [];

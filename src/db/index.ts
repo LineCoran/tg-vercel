@@ -37,22 +37,11 @@ const ORDERS_TABLE = `
  );
 `;
 
-// const ORDERS_TABLE = `
-//  DROP TABLE orders
-// `;
-
 const ADMINS = `
     CREATE TABLE IF NOT EXISTS admins (
         id SERIAL PRIMARY KEY,
-        username VARCHAR(32) UNIQUE NOT NULL
-    );
-`
-
-const CHAT_WITH_ADMINS = `
-    CREATE TABLE IF NOT EXISTS admins_chats (
-        id SERIAL PRIMARY KEY,
-        admin_username VARCHAR(32) UNIQUE,
-        chat_id BIGINT NOT NULL
+        username VARCHAR(32) UNIQUE NOT NULL,
+        chat_id BIGINT DEFAULT NULL
     );
 `
 
@@ -68,10 +57,9 @@ const MESSAGE_LOGS = `
 
 const ALL_TABLES = [
     CHAT_SESSION_TABLE,
-    ADMINS,
     MESSAGE_LOGS,
-    CHAT_WITH_ADMINS,
-    ORDERS_TABLE
+    ORDERS_TABLE,
+    ADMINS
 ];
 
 let successFully = 0;

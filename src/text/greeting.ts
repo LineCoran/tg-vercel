@@ -1,9 +1,10 @@
 import { Context } from 'telegraf';
+//@ts-nocheck
 import createDebug from 'debug';
 import { KEYBOARDS, MAIN_ADMINS } from '../constants/constants';
 import { createCategoryOptions, getStartMsg } from '../shared';
 import { dbService } from '../service';
-import { getAdmins, getChatsWithAdmins, sendMessage, sendOrEditMessage } from '../helpers';
+import { getAdmins, sendMessage, sendOrEditMessage } from '../helpers';
 
 const debug = createDebug('bot:greeting_text');
 
@@ -29,12 +30,19 @@ const greeting = () => async (ctx: any) => {
         const justName = text.replaceAll('@', '')
 
         try {
-            await dbService.addAdmin(justName)
+            const sessions = await dbService.getSessions();
+            const existUser = sessions.find((session) => session.username === justName) || { chat_id: null };
+            await dbService.addAdmin(justName, existUser.chat_id);
+            if (existUser.chat_id) ctx.telegram.sendMessage(existUser.chat_id, 'Вас добавили в список администраторов!');
+            session.is_set_admin_process = false;
+            await dbService.saveUserSession(chatId, session)
             return sendMessage(ctx, chatId, `Пользователь ${text} успешно добавлен!`, createCategoryOptions([], { isMain: true }));
         } catch(error) {
-            return sendMessage(ctx, chatId, `Не удалось сохранить пользователя ${text}. Попробуйте еще раз.`, createCategoryOptions([], { isMain: true }));
+            session.is_set_admin_process = false;
+            await dbService.saveUserSession(chatId, session)
+          // @ts-ignore
+            return sendMessage(ctx, chatId, `Не удалось сохранить пользователя ${text}. Попробуйте еще раз. ${error.message}`, createCategoryOptions([], { isMain: true }));
         }
-        
     }
 
     if (session.is_create_order_process) {
@@ -43,10 +51,10 @@ const greeting = () => async (ctx: any) => {
         if (!ctx.update.message.caption) return sendMessage(ctx, chatId, 'Вы не отправили описание заказа! Повторите отправку.', createCategoryOptions([], { isCancel: true }));
 
         try {
-            const admins = await getChatsWithAdmins();
-            admins.forEach(async (adminChatId: any) => {
+            const admins = await getAdmins();
+            admins.forEach(async ({ chat_id }: { chat_id: number }) => {
               try {
-                await ctx.forwardMessage(adminChatId, chatId, ctx.update.message.message_id)
+                await ctx.forwardMessage(chat_id, chatId, ctx.update.message.message_id)
               } catch (e) {
                 console.log('error', e)
               }
@@ -76,14 +84,25 @@ const greeting = () => async (ctx: any) => {
 
 
     switch (text) {
-        case '/start':
-          const admins =  await getAdmins()
+      case '/start':
+          const adminsCollection: Partial<Record<string, number>> = {}
+          const admins = await getAdmins()
+          admins.forEach((admin: any) => adminsCollection[admin.username] = admin.chat_id)
           const chat = ctx.update.message.chat
-            if (admins.includes(chat.username)) {
+
+          const isOwner = MAIN_ADMINS.includes(chat.username);
+          session.is_owner = isOwner;
+            if (chat.username in adminsCollection || isOwner) {
                 try {
+
+                  try {
+                    if (!adminsCollection[chat.username]) await dbService.updateAdminChatId(chat.username, chatId)
+                  } catch (error) {
+                    // @ts-ignore
+                    await ctx.sendMessage(`Произошла ошибка при сохранении чата. Обратитесь в поддержку. Error: ${error.message}`);
+                  }
                     session.is_admin = true;
                     session.is_owner = MAIN_ADMINS.includes(chat.username);
-                    await dbService.addChatWithAdmin(chat.username, chatId);
                     let welcomeMsg = `Привет ${chat.first_name} ${chat.last_name}!\n`
                     welcomeMsg += session.is_owner ? `Ты идентифицирован как Главный администратор!\n` : 'Ты идентифицирован как администратор!'
                     if (session.is_owner) {

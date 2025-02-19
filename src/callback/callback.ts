@@ -28,7 +28,8 @@ const callback = () => async (ctx: any) => {
             }
     
             try {
-                await dbService.deleteAdmin(adminUserNameToDelete);
+                const deletedAdminChatId = await dbService.deleteAdmin(adminUserNameToDelete);
+                if (deletedAdminChatId) ctx.telegram.sendMessage(deletedAdminChatId, 'Вы были удалены из списка администраторов!')
                 return sendOrEditMessage(ctx, chatId, `Пользователь @${adminUserNameToDelete} успешно удален из списка администраторов!`, createCategoryOptions([], { isMain: true }))    
             } catch(error: any) {
                 console.log(error)
@@ -90,14 +91,14 @@ const callback = () => async (ctx: any) => {
                 let msg = ''
                 const admins = await dbService.getAdmins();
                 const filteredAdmins = admins.filter(admin => admin.username !== MAIN_ADMIN);
-                filteredAdmins.forEach(admin => msg += `@${admin.username}\n`)
+                filteredAdmins.forEach((admin, index) => msg += `${index + 1}. @${admin.username} - ID чата: ${admin.chat_id}\n`)
                 return sendOrEditMessage(ctx, chatId, `Список администраторов:\n ${msg}`, createCategoryOptions([], { isBack: true } ))
             case '/admin_sessions':
     
             try {
                 const allSession = await dbService.getSessions();
                 let msgForSession = `Всего сессий: ${allSession.length}\n`
-                allSession.forEach((sessionItem, index) => msgForSession += `${index + 1}.\nИмя: ${sessionItem.first_name} ${sessionItem.second_name}\nНик: ${sessionItem.username}\nДата: ${sessionItem.timestamp}\n\n\n`)
+                allSession.forEach((sessionItem, index) => msgForSession += `${index + 1}.\nИмя: ${sessionItem.first_name} ${sessionItem.second_name}\nНик: ${sessionItem.username}\n Чат ID: ${sessionItem.chat_id}\n Дата: ${sessionItem.timestamp}\n\n\n`)
                 return sendOrEditMessage(ctx, chatId, `Список всех сессий:\n${msgForSession}`, createCategoryOptions([], { isBack: true } ))
     
             } catch (error: any) {

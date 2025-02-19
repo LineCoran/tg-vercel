@@ -61,25 +61,22 @@ export const dbService = {
         );
       },
 
-    addAdmin: async (username: string) => {
-        await pool.query('INSERT INTO admins (username) VALUES ($1) ON CONFLICT DO NOTHING', [username]);
+    addAdmin: async (username: string, chat_id: number | null) => {
+        await pool.query('INSERT INTO admins (username, chat_id) VALUES ($1, $2) ON CONFLICT DO NOTHING', [username, chat_id]);
+    },
+
+    updateAdminChatId: async (username: string, chat_id: number) => {
+        const query = `UPDATE admins SET chat_id = $1 WHERE username = $2`
+        await pool.query(query, [chat_id, username]);
     },
 
     deleteAdmin: async (username: string) => {
-        await pool.query('DELETE FROM admins WHERE username = $1;', [username]);
-    },
-
-    addChatWithAdmin: async (admin_username: string, chat_id: number) => {
-        await pool.query('INSERT INTO admins_chats (admin_username, chat_id) VALUES ($1, $2) ON CONFLICT DO NOTHING', [admin_username, chat_id]);
+        const res =  await pool.query('DELETE FROM admins WHERE username = $1 RETURNING chat_id', [username]);
+        return res.rows[0]?.chat_id;
     },
 
     getAdmins: async() => {
         const res = await pool.query('SELECT * FROM admins');
-        return res.rows
-    },
-
-    getChatsWithAdmins: async() => {
-        const res = await pool.query('SELECT * FROM admins_chats');
         return res.rows
     },
 
