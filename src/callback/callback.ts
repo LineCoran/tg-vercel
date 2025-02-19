@@ -6,7 +6,7 @@ import { createAdminsListToDelete, sendOrEditMessage } from '../helpers';
 import dayjs = require('dayjs');
 
 const MAIN_ADMIN = 'alexeiiiii';
-const SUB_MAIN_ADMIN = ['Mazhako'];
+const SUB_MAIN_ADMIN = ['Mazhako', 'Bronxen'];
 const DELETE_ADMIN_UNIQ_PREFIX = '/delete_admin--'
 
 const MAIN_ADMINS = [MAIN_ADMIN, ...SUB_MAIN_ADMIN];
