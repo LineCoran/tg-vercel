@@ -9,7 +9,8 @@ import { scences } from './scenes';
 const ENVIRONMENT = process.env.NODE_ENV || '';
 
 const isDev = ENVIRONMENT !== 'production'
-const BOT_TOKEN = isDev ? process.env.BOT_TOKEN_DEV || '' : process.env.BOT_TOKEN || '';
+const isTest = ENVIRONMENT !== 'test'
+const BOT_TOKEN = isTest ? process.env.BOT_TOKEN_TEST : process.env.BOT_TOKEN_DEV;
 
 const bot = new Telegraf(BOT_TOKEN);
 
