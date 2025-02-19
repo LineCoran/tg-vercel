@@ -1,15 +1,11 @@
 import { dbService } from '../service';
-import { createCategoryOptions, getMinMaxDates, getStartMsg } from '../shared';
-import { KEYBOARDS } from '../constants/constants';
+import { createCategoryOptions, getStartMsg } from '../shared';
+import { KEYBOARDS, MAIN_ADMIN, MAIN_ADMINS } from '../constants/constants';
 import { createReadStream } from 'fs';
 import { createAdminsListToDelete, sendOrEditMessage } from '../helpers';
 import dayjs = require('dayjs');
 
-const MAIN_ADMIN = 'alexeiiiii';
-const SUB_MAIN_ADMIN = ['Mazhako', 'Bronxen'];
 const DELETE_ADMIN_UNIQ_PREFIX = '/delete_admin--'
-
-const MAIN_ADMINS = [MAIN_ADMIN, ...SUB_MAIN_ADMIN];
 
 const callback = () => async (ctx: any) => {
     const chatId = ctx.update.callback_query.message?.chat.id;

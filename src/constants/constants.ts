@@ -188,7 +188,7 @@ export const KEYBOARDS = {
 }
 
 export const MAIN_ADMIN = 'alexeiiiii';
-export const SUB_MAIN_ADMIN = ['Mazhako'];
+export const SUB_MAIN_ADMIN = ['Bronxen'];
 export const DELETE_ADMIN_UNIQ_PREFIX = '/delete_admin--'
 
 export const MAIN_ADMINS = [MAIN_ADMIN, ...SUB_MAIN_ADMIN];
